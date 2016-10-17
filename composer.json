@@ -1,0 +1,9 @@
+{
+  "name":"rvtech/starshipit",
+  "type":"magento-module",
+  "homepage":"https://www.magentocommerce.com/magento-connect/dhl-auspost-startrack-fastway-couriers-please-shipping-extension.html",
+  "description":"A cloud based app enabling international & domestic rates, labels, returns, paperless trade, validation & coms",
+  "require":{
+    "magento-hackathon/magento-composer-installer":"*"
+  }
+}
