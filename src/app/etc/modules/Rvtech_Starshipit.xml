@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Rvtech_Starshipit>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Rvtech_Starshipit>
+    </modules>
+</config> 

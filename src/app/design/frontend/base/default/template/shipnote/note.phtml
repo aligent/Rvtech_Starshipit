@@ -1,0 +1,32 @@
+<?php if ($this->canShow()): ?>
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		jQuery('input[type="radio"][name="ship-signature-required"]').click(function(){
+			signatureRequired(this);
+		});
+	});
+    function signatureRequired(radioItem) {
+        var authorityToLeaveCheckBox = jQuery('#'+'authorityToLeaveCheckBox');
+        if (radioItem.value == 1) {        
+            authorityToLeaveCheckBox.prop("checked", false);
+            authorityToLeaveCheckBox.prop("disabled", true);
+        }
+        else {
+            authorityToLeaveCheckBox.prop("disabled", false);
+        }
+    }
+</script>
+<div id='shipnote'>
+    <div id="shipnoteContent">
+        <label for='shipnote-note'><?php echo $this->__(Mage::helper('shipnote')->getFrontendLabel()) ?></label>
+        <textarea id='shipnote-note' name='ship-note' class="input-text"></textarea>
+    </div>
+    <div style="width: 160px; float: left">Signature Required:</div>
+    <div style="padding-top: 2px">
+        <input type="radio" name='ship-signature-required' value="1" onclick="signatureRequired(true);" /> Yes
+        <input type="radio" name='ship-signature-required' value="0" onclick="signatureRequired(false);" checked /> No
+    </div>
+    <div style="width: 160px; float: left">Authority to Leave:</div>
+    <div style="padding-top: 2px"><input type="checkbox" id="authorityToLeaveCheckBox" name='ship-authority-to-leave' /></div>
+</div>
+<?php endif; ?>

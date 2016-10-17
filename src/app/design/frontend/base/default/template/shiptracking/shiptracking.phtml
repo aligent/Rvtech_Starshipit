@@ -1,0 +1,89 @@
+<?php
+    if(Mage::getStoreConfig('shipnote_options/shiptracking_settings/enabled')):
+    ?>
+    <div class="form-list">
+        <form name="track_order" id="track_order" action="" method="post" onsubmit="sendAjax('track_order','<?php  echo Mage::getUrl('*/*/track');?>'); return false;">  
+        <div class="fieldset">        
+         <h2 class="legend"><?php echo $this->__('Track Your Order ') ?></h2>  
+            <ul class="form-list">
+                <li>
+                    <label for="order_id" class="required"><em>*</em><?php echo $this->__('Order Id') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="order_id" id="order_id" value="" title="" class="input-text required-entry" />
+                    </div>    
+                </li>
+                <li>
+                    <label for="email_address" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                    <div class="input-box" >
+                        <input type="text" name="email" id="email_address" value="" title="<?php echo $this->__('Email Address') ?>" class="input-text validate-email required-entry" />
+                    </div>    
+                </li>
+            </ul>
+            <div class="buttons-set">
+                <button id="track_button" type="submit" class="button" title="<?php echo $this->__('Track Your Order') ?>" name="track" id="track"><span><span><?php echo $this->__('Track Your Order') ?></span></span></button>
+            </div>
+
+        </form>
+    </div>
+        <div id="loading" class="loading" style="display:none">
+            <div id="loading-track" >
+                <p class="loader" id="loading_track_loader"><img src="<?php echo $this->getSkinUrl('shiptracking/images/ajax-loader-tr.gif') ?>" alt="<?php echo Mage::helper('adminhtml')->__('Loading...') ?>"/><br/><?php echo $this->__('Loading...') ?></p>
+            </div>
+        </div>
+    </div> 
+    <div id="oderinfo" class="order-info-message"><p class="msg">Please Enter Order Id and Email-Id to track your Order </p></div>
+
+    <script type="text/javascript">
+        var validateForm = new VarienForm('track_order', true);
+    </script>           
+    <script type="text/javascript">
+        function sendAjax(frmId,url){
+            if (!validateForm.validator.validate()) {
+                return;
+            }
+            var data = $(frmId).serialize(this);
+            $("loading").show();
+            new Ajax.Updater(
+                {
+                    success:"oderinfo"
+                }, 
+                url,
+                {
+                    asynchronous:true,
+                    evalScripts:false,
+                    onComplete:function(request, json){
+                        $("loading").hide();
+                        $("msg").hide();
+                        return false;
+                    }, 
+                    onLoading:function(request, json){},
+                    parameters:data
+                }
+                 
+            ); 
+            return false;
+        }
+        
+        function getParameterByName(name) {
+    	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    	        results = regex.exec(location.search);
+    	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      	}
+        
+        var queryStrOrderId = getParameterByName('id');
+        var queryStrEmail = getParameterByName('email');
+        
+        if (queryStrOrderId != "" && queryStrEmail != "") {
+          jQuery("#order_id").val(queryStrOrderId);
+          jQuery("#email_address").val(queryStrEmail);
+          jQuery('#track_order').submit();   
+        }
+    </script>
+    <?php else: ?>
+    <?php
+        $url = Mage::getBaseUrl();
+        Mage::app()->getFrontController()->getResponse()->setRedirect($url);
+    ?>
+    <?php endif; ?>
+ 

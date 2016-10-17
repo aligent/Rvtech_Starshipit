@@ -1,0 +1,225 @@
+<?php
+  $order = $this->getShipTracking();
+  $shipTrack = $this->getTrackInfo($order);
+  $shipItTrackDetails = $this->getShipItTrackInfo($order->getIncrementId());
+  
+  $shipmentDate = $shipItTrackDetails->{'shipmentDate'};
+  preg_match('/(\d{10})(\d{3})([\+\-]\d{4})/', $shipmentDate, $shipmentDateMatches);
+  $shipmentDateFormatted = DateTime::createFromFormat("U.u.O",vsprintf('%2$s.%3$s.%4$s', $shipmentDateMatches));
+  
+  $statusDate = $shipItTrackDetails->{'statusDate'};
+  preg_match('/(\d{10})(\d{3})([\+\-]\d{4})/', $statusDate, $statusDateMatches);
+  $statusDateFormatted = DateTime::createFromFormat("U.u.O",vsprintf('%2$s.%3$s.%4$s', $statusDateMatches));
+  
+  $_results = $shipTrack;
+?> 
+
+<div class="fieldset">
+  <h2 class="legend"><?php echo Mage::helper('contacts')->__('Your Order Information') ?></h2>
+  <?php
+    if ($shipItTrackDetails != null) {
+  ?>
+  <p>
+    <?php echo $this->__("Order Number :")?> <strong><?php echo $shipItTrackDetails->{'orderNumber'} ?></strong>
+  </p>
+  <?php
+    }
+  ?>
+  <p>
+    <?php echo $this->__("Your Order Status is :")?> <strong><?php echo $order->getStatusLabel() ?></strong>
+  </p>
+  <?php
+    if ($shipItTrackDetails != null) {
+      if ($shipItTrackDetails->{'status'} != null) {
+  ?>
+   
+    <table class="data-table track-data-table">
+      <col width="15%" />
+      <col />
+      <tbody>
+        <tr>
+          <th>
+            <?php echo $this->__("Tracking Number :")?>
+          </th>
+          <td>
+            <?php echo $shipItTrackDetails->{'trackingNumber'} ?>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <?php echo $this->__("Courier Name :")?>
+          </th>
+          <td>
+            <strong><?php echo $shipItTrackDetails->{'courierName'} ?></strong>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <?php echo $this->__("Courier Service :")?>          
+          </th>
+          <td>
+            <?php echo $shipItTrackDetails->{'courierService'} ?>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <?php echo $this->__("Shipment Date :")?>
+          </th>
+          <td>
+            <?php echo $shipmentDateFormatted->format('r') ?>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <?php echo $this->__("Current Status :")?>
+          </th>
+          <td>
+            <strong><?php echo $shipItTrackDetails->{'status'} ?></strong>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <?php echo $this->__("Last Update:")?>
+          </th>
+          <td>
+            <strong><?php echo $statusDateFormatted->format('r') ?></strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <?php
+      $trackingEvents = $shipItTrackDetails->{'trackingEvents'};
+      if(sizeof($trackingEvents) > 0) {
+    ?>
+      <table class="data-table track-data-table">
+          <tr>
+            <td>
+              <?php echo $this->__("Date")?>
+            </td>
+            <td>
+              <?php echo $this->__("Status")?>
+            </td>
+            <td>
+              <?php echo $this->__("Description")?>
+            </td>
+          </tr>
+          <?php foreach($trackingEvents as $trackingEvent): ?>
+            <?php if(is_object($trackingEvent)): ?>
+            <tr>
+              <td>
+                <?php
+                  $courierEventDate = $trackingEvent->{'courierEvent'};
+                  preg_match('/(\d{10})(\d{3})([\+\-]\d{4})/', $courierEventDate, $courierEventDateMatches);
+                  $courierEventDateFormatted = DateTime::createFromFormat("U.u.O",vsprintf('%2$s.%3$s.%4$s', $courierEventDateMatches)); 
+                  echo $courierEventDateFormatted->format('r') 
+                ?>
+              </td>
+              <td>
+                <?php echo $trackingEvent->{'detailsShort'} ?>
+              </td>
+              <td>
+                <?php echo $trackingEvent->{'detailsLong'} ?>
+              </td>
+            </tr>
+            <?php endif; ?>
+          <?php endforeach; ?>
+      </table>
+    <?php      
+      }
+    ?>
+    
+    <?php
+      }
+    }
+    ?>
+<?php
+  if ($shipItTrackDetails == null || $shipItTrackDetails->{'status'} == null) {
+?>
+  <?php if(sizeof($_results)>0): ?>
+    <?php foreach($_results as $shipid => $_result): ?>
+        <?php if($shipid): ?>
+        <h4><?php echo $this->__('Shipment #').$shipid; ?></h4>
+        <?php endif; ?>
+        <?php if(sizeof($_result)>0): ?>
+            <?php $rowCount = sizeof($_result); $counter = 1; ?>
+            <?php foreach($_result as $track): ?>
+              <table class="data-table track-data-table">
+                <col width="15%" />
+                <col />
+                <tbody>
+                    <?php if(is_object($track)): ?>
+                    <tr>
+                        <th><?php echo $this->__('Tracking Number:'); ?></th>
+                        <td><?php echo $track->getTracking(); ?></td>
+                    </tr>
+                    <?php if ($track->getCarrierTitle()): ?>
+                    <tr>
+                        <th><?php echo $this->__('Carrier:'); ?></th>
+                        <td><?php echo $track->getCarrierTitle(); ?></td>
+                    </tr>
+                <?php
+    
+                  switch ($track->getCarrierTitle()) {
+                      case "DHL":
+                          $url = "http://www.dhl.com/";
+                          break;
+                      case "DHL (Deprecated)":
+                          $url = "http://www.dhl.com/";
+                          break;
+                      case "Federal Express":
+                          $url = "http://www.fedex.com/";
+                          break;
+                       case "United States Postal Service":
+                          $url = "https://tools.usps.com";
+                          break;
+                       case "United Parcel Service":
+                          $url = "http://www.ups.com/";
+                          break;           
+                      default:
+                     $i =1 ;
+                           break;
+                  }
+                ?>
+                <?php 
+                  if($i!=1) { 
+                ?>
+                    <tr>
+                        <th><?php echo $this->__('More Details:'); ?></th>
+                        <td class="error"><a href="<?php echo $url; ?>" onclick="this.target='_blank'"><?php echo $this->__('Click here') ?></a><?php echo $this->__('  to get details  ');?></a>
+                        
+                        </td>
+                    </tr>
+                    <?php } else { ?>
+                    <th><?php echo $this->__('Notice:'); ?></th>
+                        <td class="error">
+                          <?php 
+                            if ((bool) Mage::getStoreConfig('contacts/contacts/enabled')) : 
+                          ?>
+                            <a href="<?php echo $this->getUrl('contacts') ?>" onclick="this.target='_blank'"><?php echo $this->__('Click here') ?></a>
+                          <?php 
+                            echo $this->__('  to get details or '); 
+                            endif; 
+                              echo $this->__('email us at '); ?>
+                              <a href="mailto:<?php echo Mage::getStoreConfig('trans_email/ident_support/email'); ?>">
+                                <?php echo Mage::getStoreConfig('trans_email/ident_support/email') ?>
+                              </a>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                    <?php endif; ?>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                <?php $counter++; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p><?php echo $this->__('There is no tracking information available for this shipment.'); ?></p>
+        <?php endif; ?>
+    <?php endforeach; ?>
+  <?php else: ?>
+      <div><?php echo $this->__('There is no tracking information available.'); ?></div>
+  <?php endif; ?>
+<?php
+  }
+?>
+</div>

@@ -1,0 +1,386 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Rvtech_Starshipit>
+      <version>1.6.2.0</version>
+    </Rvtech_Starshipit>
+  </modules>
+  <admin>
+    <routers>
+      <adminhtml>
+        <args>
+          <modules>
+            <shipit after="Mage_Adminhtml">Rvtech_Starshipit</shipit>
+          </modules>
+        </args>
+      </adminhtml>
+      <shiptracking>
+        <use>admin</use>
+        <args>
+          <module>Rvtech_Starshipit</module>
+          <frontName>shiptracking</frontName>
+        </args>
+      </shiptracking>
+    </routers>
+  </admin>
+  <adminhtml>
+    <acl>
+      <resources>
+        <admin>
+          <children>
+            <system>
+              <children>
+                <config>
+                  <children>
+                    <shipit_options>
+                      <title>ShipIt Module Section</title>
+                    </shipit_options>
+                    <shipnote_options>
+                      <title>Ship Notes</title>
+                    </shipnote_options>
+                    <shiptracking>
+                      <title>Ship Tracking</title>
+                    </shiptracking>
+                  </children>
+                </config>
+              </children>
+            </system>
+          </children>
+        </admin>
+      </resources>
+    </acl>
+    <events>
+      <adminhtml_sales_order_create_process_data>
+        <observers>
+          <shipnote>
+            <class>Rvtech_Starshipit_Model_Adminhtml_Observer</class>
+            <method>adminhtml_sales_order_create_process_data</method>
+          </shipnote>
+        </observers>
+      </adminhtml_sales_order_create_process_data>
+      <sales_convert_quote_to_order>
+        <observers>
+          <shipnote>
+            <type>model</type>
+            <class>Rvtech_Starshipit_Model_Adminhtml_Observer</class>
+            <method>sales_convert_quote_to_order</method>
+          </shipnote>
+        </observers>
+      </sales_convert_quote_to_order>
+    </events>
+    <layout>
+      <updates>
+        <starshipit>
+          <file>shipit.xml</file>
+        </starshipit>
+        <shipnote>
+          <file>shipnote.xml</file>
+        </shipnote>
+        <shiptracking>
+          <file>shiptracking.xml</file>
+        </shiptracking>
+      </updates>
+    </layout>
+    <translate>
+      <modules>
+        <Rvtech_Starshipit>
+          <files>
+            <default>Rvtech_StarshipitNote.csv</default>
+          </files>
+        </Rvtech_Starshipit>
+      </modules>
+    </translate>
+  </adminhtml>
+  <frontend>
+    <routers>
+      <ship>
+        <use>standard</use>
+        <args>
+          <module>Rvtech_Starshipit</module>
+          <frontName>ship</frontName>
+        </args>
+      </ship>
+      <shiptracking>
+        <use>standard</use>
+        <args>
+          <module>Rvtech_Starshipit</module>
+          <frontName>shiptracking</frontName>
+        </args>
+      </shiptracking>
+    </routers>
+    <layout>
+      <updates>
+        <ship>
+          <file>ship.xml</file>
+        </ship>
+        <shipnote>
+          <file>shipnote.xml</file>
+        </shipnote>
+        <addressautocomplete>
+          <file>addressautocomplete.xml</file>
+        </addressautocomplete>
+        <shiptracking>
+          <file>shiptracking.xml</file>
+        </shiptracking>
+      </updates>
+    </layout>
+    <translate>
+      <modules>
+        <Rvtech_Starshipit>
+          <files>
+            <default>Rvtech_StarshipitNote.csv</default>
+          </files>
+        </Rvtech_Starshipit>
+      </modules>
+    </translate>
+  </frontend>
+  <global>
+    <models>
+      <ship>
+        <class>Rvtech_Starshipit_Model</class>
+        <resourceModel>ship_mysql4</resourceModel>
+      </ship>
+      <shipnote>
+        <class>Rvtech_Starshipit_Model</class>
+        <resourceModel>shipnote_resource</resourceModel>
+      </shipnote>
+      <shipnote_resource>
+        <class>Rvtech_Starshipit_Model_Resource</class>
+        <entities>
+          <note>
+            <table>shipnote_note</table>
+          </note>
+        </entities>
+      </shipnote_resource>
+      <ship_mysql4>
+        <class>Rvtech_Starshipit_Model_Mysql4</class>
+        <entities>
+          <ship>
+            <table>ship</table>
+          </ship>
+        </entities>
+      </ship_mysql4>
+      <shiptracking>
+        <class>Rvtech_Starshipit_Model</class>
+        <resourceModel>shiptracking_mysql4</resourceModel>
+      </shiptracking>
+      <shiptracking_mysql4>
+        <class>Rvtech_Starshipit_Model_Mysql4</class>
+        <entities>
+          <shiptracking>
+            <table>shiptracking</table>
+          </shiptracking>
+        </entities>
+      </shiptracking_mysql4>
+    </models>
+    <resources>
+      <ship_setup>
+        <setup>
+          <module>Rvtech_Starshipit</module>
+        </setup>
+        <connection>
+          <use>core_setup</use>
+        </connection>
+      </ship_setup>
+      <shipnote_setup>
+        <setup>
+          <module>Rvtech_Starshipit</module>
+          <class>Mage_Sales_Model_Resource_Setup</class>
+        </setup>
+      </shipnote_setup>
+      <ship_write>
+        <connection>
+          <use>core_write</use>
+        </connection>
+      </ship_write>
+      <ship_read>
+        <connection>
+          <use>core_read</use>
+        </connection>
+      </ship_read>
+      <shiptracking_setup>
+        <setup>
+          <module>Rvtech_Starshipit</module>
+        </setup>
+        <connection>
+          <use>core_setup</use>
+        </connection>
+      </shiptracking_setup>
+      <shiptracking_write>
+        <connection>
+          <use>core_write</use>
+        </connection>
+      </shiptracking_write>
+      <shiptracking_read>
+        <connection>
+          <use>core_read</use>
+        </connection>
+      </shiptracking_read>
+    </resources>
+    <blocks>
+      <adminhtml>
+        <rewrite>
+          <sales_order_view>Rvtech_Starshipit_Block_Sales_Order_View</sales_order_view>
+          <!-- Massaction Done by Observer, check below -->
+          <!-- <sales_order_grid>Rvtech_Starshipit_Block_Sales_Order_Grid</sales_order_grid> -->
+        </rewrite>
+      </adminhtml>
+      <ship>
+        <class>Rvtech_Starshipit_Block</class>
+      </ship>
+      <shipnote>
+        <class>Rvtech_Starshipit_Block</class>
+      </shipnote>
+      <shiptracking>
+        <class>Rvtech_Starshipit_Block</class>
+      </shiptracking>
+    </blocks>
+    <helpers>
+      <ship>
+        <class>Rvtech_Starshipit_Helper</class>
+      </ship>
+      <shipnote>
+        <class>Rvtech_Starshipit_Helper</class>
+      </shipnote>
+      <addressautocomplete>
+        <class>Rvtech_Starshipit_Helper</class>
+      </addressautocomplete>
+      <shiptracking>
+        <class>Rvtech_Starshipit_Helper</class>
+      </shiptracking>
+    </helpers>
+    <events>
+      <core_block_abstract_prepare_layout_before>
+        <observers>
+          <shipit_core_block_abstract_prepare_layout_before>
+            <class>Rvtech_Starshipit_Model_Observer</class>
+            <method>addMassAction</method>
+          </shipit_core_block_abstract_prepare_layout_before>
+        </observers>
+      </core_block_abstract_prepare_layout_before>
+      <sales_convert_quote_to_order>
+        <observers>
+          <shipnote>
+            <type>model</type>
+            <class>Rvtech_Starshipit_Model_Observer</class>
+            <method>sales_convert_quote_to_order</method>
+          </shipnote>
+        </observers>
+      </sales_convert_quote_to_order>
+      <checkout_controller_onepage_save_shipping_method>
+        <observers>
+          <shipnote>
+            <type>model</type>
+            <class>Rvtech_Starshipit_Model_Observer</class>
+            <method>checkout_controller_onepage_save_shipping_method</method>
+          </shipnote>
+        </observers>
+      </checkout_controller_onepage_save_shipping_method>
+    </events>
+  </global>
+  <default>
+    <shipit_options>
+      <group1>
+        <sync_orders>5</sync_orders>
+      </group1>
+    </shipit_options>
+    <shipnote_options>
+      <basic_settings>
+        <enabled>1</enabled>
+        <frontend_label>Shipping Instructions</frontend_label>
+      </basic_settings>
+    </shipnote_options>
+    <carriers>
+      <auspost>
+        <active>0</active>
+        <model>ship/carrier_auspost</model>
+        <title>Australia Post</title>
+        <name>Standard</name>
+        <price>0.00</price>
+        <specificerrmsg>This shipping method is currently unavailable. If you would like to ship
+        using this shipping method, please contact us.</specificerrmsg>
+        <showmethod>1</showmethod>
+      </auspost>
+      <courierpost>
+        <active>0</active>
+        <model>ship/carrier_courierpost</model>
+        <title>CourierPost</title>
+        <name>Online Parcel</name>
+        <price>0.00</price>
+        <specificerrmsg>This shipping method is currently unavailable. If you would like to ship
+        using this shipping method, please contact us.</specificerrmsg>
+        <showmethod>1</showmethod>
+      </courierpost>
+      <couriersplease>
+        <active>0</active>
+        <model>ship/carrier_couriersplease</model>
+        <title>CouriersPlease</title>
+        <name>CouriersPlease Parcel</name>
+        <price>0.00</price>
+        <specificerrmsg>This shipping method is currently unavailable. If you would like to ship
+        using this shipping method, please contact us.</specificerrmsg>
+        <showmethod>1</showmethod>
+      </couriersplease>
+      <dhlexpress>
+        <active>0</active>
+        <model>ship/carrier_dhlexpress</model>
+        <title>DHL Express</title>
+        <name>Express</name>
+        <price>0.00</price>
+        <specificerrmsg>This shipping method is currently unavailable. If you would like to ship
+        using this shipping method, please contact us.</specificerrmsg>
+        <showmethod>1</showmethod>
+      </dhlexpress>
+      <fastway>
+        <active>0</active>
+        <model>ship/carrier_fastway</model>
+        <title>Fastway</title>
+        <name>Fastway Parcel</name>
+        <price>0.00</price>
+        <specificerrmsg>This shipping method is currently unavailable. If you would like to ship
+        using this shipping method, please contact us.</specificerrmsg>
+        <showmethod>1</showmethod>
+      </fastway>
+      <nzpost>
+        <active>0</active>
+        <model>ship/carrier_nzpost</model>
+        <title>NZ Post</title>
+        <name>NZ Post</name>
+        <price>0.00</price>
+        <specificerrmsg>This shipping method is currently unavailable. If you would like to ship
+        using this shipping method, please contact us.</specificerrmsg>
+        <showmethod>1</showmethod>
+      </nzpost>
+      <pace>
+        <active>0</active>
+        <model>ship/carrier_pace</model>
+        <title>Pace</title>
+        <name>Same Day</name>
+        <price>0.00</price>
+        <specificerrmsg>This shipping method is currently unavailable. If you would like to ship
+        using this shipping method, please contact us.</specificerrmsg>
+        <showmethod>1</showmethod>
+      </pace>
+      <startrackexpress>
+        <active>0</active>
+        <model>ship/carrier_startrackexpress</model>
+        <title>StarTrack Express</title>
+        <name>Same Day</name>
+        <price>0.00</price>
+        <specificerrmsg>This shipping method is currently unavailable. If you would like to ship
+        using this shipping method, please contact us.</specificerrmsg>
+        <showmethod>1</showmethod>
+      </startrackexpress>
+      <shipit>
+        <active>0</active>
+        <model>ship/carrier_shipit</model>
+        <title>ShipIt</title>
+        <name>Rate Service</name>
+        <price>0.00</price>
+        <specificerrmsg>This shipping method is currently unavailable. If you would like to ship
+        using this shipping method, please contact us.</specificerrmsg>
+        <showmethod>1</showmethod>
+      </shipit>
+    </carriers>
+  </default>
+</config>

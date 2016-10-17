@@ -1,0 +1,23 @@
+<script type="text/javascript">
+    //<![CDATA[
+    function test() {
+        var formData = $('config_edit_form').serialize();
+        new Ajax.Request('<?php echo $this->getAjaxCheckUrl() ?>', {
+            method:     'post',
+            postBody: formData,
+            onSuccess: function(transport){
+ 
+            if (transport.responseText){
+                //alert(transport.responseText);
+                if($('messages')){
+                   $('messages').innerHTML = transport.responseText;
+				    //alert(transport.responseText);
+                }                
+            }
+            }
+        });
+    }
+    //]]>
+</script>
+ 
+<?php echo $this->getButtonHtml() ?>

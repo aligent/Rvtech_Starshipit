@@ -1,0 +1,28 @@
+<div class="entry-edit-head" id='shipnote'>
+    <h4 class="icon-head head-shipnote">
+		Shipping Notes
+		<!--<?php echo $this->__(Mage::helper('shipnote')->getFrontendLabel()) ?>-->
+	</h4>
+</div>
+<fieldset>
+<?php
+  $_note = $this->getNote();
+  if (false !== $_note) {
+    $signatureRequired = $_note->getSignatureRequired();
+	  $authorityToLeave = $_note->getAuthorityToLeave();
+    echo 'Delivery Instructions: ' . $_note;
+		if ($signatureRequired == 0) {
+			echo '<br />Signature Required: NO';
+		}
+		else {
+			echo '<br />Signature Required: YES';
+		}
+    if ($authorityToLeave == 0) {
+      echo '<br />Authority to Leave: NO';
+    }
+    else {
+      echo '<br />Authority to Leave: YES';
+    }
+  }
+?>
+</fieldset>

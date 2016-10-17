@@ -1,0 +1,47 @@
+<config>
+    <api>
+        <resources>
+            <shipnote translate="title" module="shipnote">
+				        <model>Rvtech_Starshipit_Model_Api</model>
+                <title>ShipNote Resource</title>
+                <acl>shipnote</acl>
+                <methods>
+                    <info translate="title" module="shipnote">
+                        <title>Retrieve shipping note</title>
+                        <acl>shipnote/info</acl>
+						            <method>info</method>
+                    </info>
+                </methods>
+                <faults module="shipnote">
+                    <data_invalid> <!-- if we get invalid input data for shipnote -->
+                        <code>100</code >
+                        <!-- we cannot know all the errors that can appear, their details can be found in error message for call -->
+                        <message>Invalid shipping note data. Details in error message.</message>
+                    </data_invalid>
+                    <filters_invalid>
+                        <code>101</code >
+                        <message>Invalid filters specified. Details in error message.</message>
+                    </filters_invalid>
+                    <not_exists>
+                        <code>102</code >
+                        <message>Shipping note doesn't exist.</message>
+                    </not_exists>
+                    <not_deleted>
+                        <code>103</code >
+                        <message>Shipping note was not deleted. Details in error message.</message>
+                    </not_deleted>
+                </faults>
+            </shipnote>
+        </resources>
+        <acl>
+            <resources>
+                    <shipnote translate="title" module="shipnote">
+                         <title>ShipNotes</title>
+                         <info translate="title" module="shipnote">
+                            <title>Get Info</title>
+                         </info>
+                    </shipnote>
+            </resources>
+        </acl>
+    </api>
+</config>
