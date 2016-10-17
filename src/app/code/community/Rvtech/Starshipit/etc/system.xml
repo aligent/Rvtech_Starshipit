@@ -34,6 +34,34 @@
             </shipit_api_key>
           </fields>
         </shipit_settings>
+        <addressautocomplete_settings translate="label">
+          <label>Shipping Address Autocomplete</label>
+          <frontend_type>text</frontend_type>
+          <sort_order>15</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>1</show_in_store>
+          <fields>
+            <enabled translate="label">
+              <label>Enabled</label>
+              <frontend_type>select</frontend_type>
+              <source_model>adminhtml/system_config_source_yesno</source_model>
+              <sort_order>10</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+            </enabled>
+            <google_maps_api_key translate="label">
+              <label>Google Maps API key</label>
+              <frontend_type>text</frontend_type>
+              <sort_order>20</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+              <comment>This is a Google Maps API key required for google address validation.</comment>
+            </google_maps_api_key>
+          </fields>
+        </addressautocomplete_settings>
         <basic_settings translate="label">
           <label>Shipping Notes</label>
           <frontend_type>text</frontend_type>
