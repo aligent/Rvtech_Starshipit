@@ -286,7 +286,7 @@
     </shipit_options>
     <shipnote_options>
       <basic_settings>
-        <enabled>1</enabled>
+        <enabled>0</enabled>
         <frontend_label>Shipping Instructions</frontend_label>
       </basic_settings>
     </shipnote_options>
