@@ -1,0 +1,14 @@
+<?php if(Mage::getStoreConfig('shipnote_options/addressautocomplete_settings/enabled') && strlen(Mage::getStoreConfig('shipnote_options/addressautocomplete_settings/google_maps_api_key')) > 1): ?>
+
+    <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/shipit/jquery-1.10.2.min.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/shipit/noconflict.js'); ?>"></script>
+
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&key=<?php echo(Mage::getStoreConfig('shipnote_options/addressautocomplete_settings/google_maps_api_key')); ?>&libraries=places"></script>
+
+    <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/shipit/onstepcheckout.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/shipit/onstepcheckout_shipping.js'); ?>"></script>
+
+<?php endif; ?>
+
